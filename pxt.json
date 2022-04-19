@@ -1,5 +1,5 @@
 {
-    "name": "microbit_hello",
+    "name": "microbit_tests",
     "dependencies": {
         "core": "*",
         "radio": "*",
