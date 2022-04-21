@@ -1,32 +1,37 @@
-function plot_draw() {
-    led.plotBrightness(0, 0, new_brigth)
-    led.plotBrightness(4, 0, new_brigth)
-    led.plotBrightness(1, 1, new_brigth)
-    led.plotBrightness(3, 1, new_brigth)
-    led.plotBrightness(2, 2, new_brigth)
-    led.plotBrightness(1, 3, new_brigth)
-    led.plotBrightness(0, 4, new_brigth)
-    led.plotBrightness(3, 3, new_brigth)
-    led.plotBrightness(4, 4, new_brigth)
+let SPEED = 500
+let level = 5
+function switch_led_off(x: number, y: number) {
+    let bright = led.pointBrightness(x, y)
+    while (bright > 0) {
+        led.unplot(x, y)
+        bright -= 10
+        led.plotBrightness(x, y, bright)
+        pause(10)
+    }
 }
 
-let RATE = 2
-let MAX_BRIGTH = 255
-let MIN_BRIGTH = 0
-let action = "decrease"
-let new_brigth = MAX_BRIGTH
-// ON START
-plot_draw()
-basic.pause(2000)
-basic.forever(function on_forever() {
-    let light_level = input.lightLevel()
-    if (light_level == 0) {
-        basic.showNumber(0)
-        serial.writeLine("Buio")
-    } else {
-        basic.showNumber(light_level)
-        serial.writeLine("Luce")
-    }
+function fall_a_drop(x_coordinate: number) {
     
-    plot_draw()
+    
+    SPEED = randint(50, 150)
+    led.plot(x_coordinate, 0)
+    basic.pause(SPEED)
+    switch_led_off(x_coordinate, 0)
+    for (let y_coordinate = 1; y_coordinate < 5; y_coordinate++) {
+        led.plot(x_coordinate, y_coordinate)
+        basic.pause(SPEED)
+        switch_led_off(x_coordinate, y_coordinate)
+    }
+    basic.pause(SPEED)
+}
+
+basic.forever(function on_forever() {
+    let x1: number;
+    for (let index = 0; index < 4; index++) {
+        x1 = randint(0, 4)
+        if (led.point(x1, 0) == false) {
+            fall_a_drop(x1)
+        }
+        
+    }
 })
