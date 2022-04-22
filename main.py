@@ -56,8 +56,7 @@ def restart_screen():
     
 def screen_full():
     global levels
-
-    print(levels)
+    
     for y in range(5):
         for x in range(5):
             if (levels[x] > 1):

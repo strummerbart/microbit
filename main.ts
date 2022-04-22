@@ -60,7 +60,6 @@ function restart_screen() {
 function screen_full(): boolean {
     let x: number;
     
-    console.log(levels)
     for (let y = 0; y < 5; y++) {
         for (x = 0; x < 5; x++) {
             if (levels[x] > 1) {
