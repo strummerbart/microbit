@@ -2,7 +2,6 @@ function fall_a_drop(x_coordinate: number) {
     let level = levels[x_coordinate]
     if (level == 1 && led.point(x_coordinate, 0) == false) {
         led.plot(x_coordinate, 0)
-        console.log("Plot last led on level 1. x:" + ("" + x_coordinate))
         return
     }
     
@@ -42,12 +41,20 @@ function switch_led_off(x: number, y: number) {
 
 let SPEED = 500
 let levels = [5, 5, 5, 5, 5]
+function empty_screen() {
+    for (let y = 0; y < 5; y++) {
+        for (let x = 0; x < 5; x++) {
+            led.unplot(x, y)
+            pause(20)
+        }
+    }
+}
+
 function restart_screen() {
     
     pause(1000)
-    basic.clearScreen()
+    empty_screen()
     levels = [5, 5, 5, 5, 5]
-    console.log("----------------------------")
 }
 
 function screen_full(): boolean {

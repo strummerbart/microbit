@@ -3,8 +3,7 @@ def fall_a_drop(x_coordinate: number):
     level = levels[x_coordinate]
 
     if level == 1 and led.point(x_coordinate, 0) == False:
-        led.plot(x_coordinate, 0)
-        print("Plot last led on level 1. x:" + str(x_coordinate))
+        led.plot(x_coordinate, 0)        
         return
 
     SPEED = randint(50, 150)    
@@ -42,14 +41,19 @@ def switch_led_off(x: number, y: number):
 SPEED = 500
 levels = [5, 5, 5, 5, 5]
 
+def empty_screen():
+    for y in range(5):
+        for x in range(5):
+            led.unplot(x, y)
+            pause(20)            
+
 def restart_screen():
     global levels
 
     pause(1000)
-    basic.clear_screen()
+    empty_screen()    
     levels = [5, 5, 5, 5, 5]
-    print("----------------------------")
-
+    
 def screen_full():
     global levels
 
