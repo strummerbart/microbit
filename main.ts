@@ -1,32 +1,38 @@
-function plot_draw() {
-    led.plotBrightness(0, 0, new_brigth)
-    led.plotBrightness(4, 0, new_brigth)
-    led.plotBrightness(1, 1, new_brigth)
-    led.plotBrightness(3, 1, new_brigth)
-    led.plotBrightness(2, 2, new_brigth)
-    led.plotBrightness(1, 3, new_brigth)
-    led.plotBrightness(0, 4, new_brigth)
-    led.plotBrightness(3, 3, new_brigth)
-    led.plotBrightness(4, 4, new_brigth)
-}
-
-let RATE = 2
-let MAX_BRIGTH = 255
-let MIN_BRIGTH = 0
-let action = "decrease"
-let new_brigth = MAX_BRIGTH
-// ON START
-plot_draw()
-basic.pause(2000)
+OLED.init(128, 64)
+tinkercademy.crashSensorSetup(DigitalPin.P0)
+let previous_crash_sensor_state = ""
 basic.forever(function on_forever() {
-    let light_level = input.lightLevel()
-    if (light_level == 0) {
-        basic.showNumber(0)
-        serial.writeLine("Buio")
+    
+    if (tinkercademy.crashSensor() == true) {
+        basic.showIcon(IconNames.Happy)
+        if (previous_crash_sensor_state == "Open") {
+            OLED.clear()
+        }
+        
+        if (previous_crash_sensor_state == "" || previous_crash_sensor_state == "Open") {
+            OLED.writeStringNewLine("Tesoro al sicuro")
+        }
+        
+        // led verde
+        pins.digitalWritePin(DigitalPin.P8, 1)
+        // led rosso
+        pins.digitalWritePin(DigitalPin.P1, 0)
+        previous_crash_sensor_state = "Closed"
     } else {
-        basic.showNumber(light_level)
-        serial.writeLine("Luce")
+        basic.showIcon(IconNames.Sad)
+        if (previous_crash_sensor_state == "Closed") {
+            OLED.clear()
+        }
+        
+        if (previous_crash_sensor_state == "" || previous_crash_sensor_state == "Closed") {
+            OLED.writeStringNewLine("Tesoro RUBATO!")
+        }
+        
+        pins.digitalWritePin(DigitalPin.P8, 0)
+        pins.digitalWritePin(DigitalPin.P1, 1)
+        basic.pause(100)
+        pins.digitalWritePin(DigitalPin.P1, 0)
+        previous_crash_sensor_state = "Open"
     }
     
-    plot_draw()
 })
