@@ -1,32 +1,29 @@
-OLED.init(128, 64)
-tinkercademy.crash_sensor_setup(DigitalPin.P0)
-previous_crash_sensor_state = ""
+
+
+servos.P2.set_range(0, 180)
+servos.P1.set_range(0, 180)
+servos.P0.set_range(0, 180)
+
 def on_forever():
-    global previous_crash_sensor_state
-
-    if tinkercademy.crash_sensor() == True:
-        basic.show_icon(IconNames.HAPPY)
-        if previous_crash_sensor_state == "Open":
-            OLED.clear()
-        
-        if (previous_crash_sensor_state == "" or previous_crash_sensor_state == "Open"):
-            OLED.write_string_new_line("Tesoro al sicuro")
-        #led verde
-        pins.digital_write_pin(DigitalPin.P8, 1)
-        #led rosso
-        pins.digital_write_pin(DigitalPin.P1, 0)
-        previous_crash_sensor_state = "Closed"
-    else:
-        basic.show_icon(IconNames.SAD)
-        if previous_crash_sensor_state == "Closed":
-            OLED.clear()
-        if (previous_crash_sensor_state == "" or previous_crash_sensor_state == "Closed"):
-            OLED.write_string_new_line("Tesoro RUBATO!")
-        pins.digital_write_pin(DigitalPin.P8, 0)
-        pins.digital_write_pin(DigitalPin.P1, 1)
-        basic.pause(100)
-        pins.digital_write_pin(DigitalPin.P1, 0)
-        previous_crash_sensor_state = "Open"
-
+    basic.show_icon(IconNames.HAPPY)
+    
 basic.forever(on_forever)
 
+def on_button_pressed_a():
+    servos.P2.set_angle(90)
+    servos.P1.set_angle(180)
+    servos.P0.set_angle(90)
+    pins.servo_write_pin(AnalogPin.P9, 90)
+    pins.servo_write_pin(AnalogPin.P8, 180)
+    
+
+def on_button_pressed_b():
+    servos.P2.set_angle(0)
+    servos.P1.set_angle(0)
+    servos.P0.set_angle(0)
+    pins.servo_write_pin(AnalogPin.P8, 0)
+    pins.servo_write_pin(AnalogPin.P9, 0)
+
+
+input.on_button_pressed(Button.A, on_button_pressed_a)
+input.on_button_pressed(Button.B, on_button_pressed_b)

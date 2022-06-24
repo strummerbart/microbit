@@ -4,7 +4,9 @@
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "tinkercademy-tinker-kit": "github:tinkertanker/pxt-tinkercademy-tinker-kit#v1.1.1"
+        "tinkercademy-tinker-kit": "github:tinkertanker/pxt-tinkercademy-tinker-kit#v1.1.1",
+        "servo": "*",
+        "wuKong": "github:elecfreaks/pxt-wukong#v1.4.9"
     },
     "files": [
         "README.md",
@@ -16,7 +18,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "4.0.18",
+        "target": "5.0.6",
         "targetId": "microbit"
     },
     "supportedTargets": [
